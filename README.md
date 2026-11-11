@@ -11,6 +11,7 @@ node app.js
 ## Node.js Basics
 
 - Use `require()` to load modules, such as `const http = require('http')`.
+- Assign a value, function, or object to `module.exports` to export it. Load a local module with a relative path, such as `require('./routes')`.
 - The `http` module supports HTTP servers and clients.
 - `http.createServer(handler)` creates a server. The handler receives the request (`req`) and response (`res`) objects.
 - `server.listen(port)` starts listening for connections on the given port.
@@ -22,6 +23,24 @@ node app.js
 - The `fs` module reads, writes, and manages files and directories.
 - A redirect status such as `302`, together with a `Location` header, tells the browser where to go next.
 - Request bodies arrive as a stream of chunks. Collect them with `req.on('data', ...)`, then combine them in `req.on('end', ...)` using `Buffer.concat(body).toString()`.
-- For `message=hello`, `bodyText.split('=')[1]` returns `hello`. Use `URLSearchParams` to correctly decode URL-encoded form data.
+- For `message=hello`, `parseBody.split('=')[1]` returns `hello`. Use `URLSearchParams` to correctly decode URL-encoded form data.
 - `fs.writeFileSync()` blocks execution until the write finishes. `fs.writeFile()` writes asynchronously and calls a callback with an error, or `null` on success.
-- Assign a value, function, or object to `module.exports` to export it. Load a local module with a relative path, such as `require('./routes')`.
+
+## npm Basics
+
+```bash
+npm init                        # Create a package.json file for the project.
+npm install <package-name>      # Install and save to dependencies (same as npm install -S <package-name>).
+npm install -D <package-name>   # Install and save to devDependencies(-D).
+npm install -g <package-name>   # Install globally (-g), outside the project.
+```
+
+- By default, `npm install` installs both `dependencies` and `devDependencies`. It uses locked versions from `package-lock.json` if they satisfy `package.json`; otherwise, it updates the lockfile. Without a lockfile, it resolves versions allowed by `package.json`.
+
+```bash
+npm run <script-name>   # Run a script defined in package.json.
+npm start               # Shortcut for npm run start.
+npm test                # Shortcut for npm run test.
+```
+
+- Running `nodemon app.js` directly requires `nodemon` to be on the terminal's `PATH`, usually through a global installation. For a local installation, use `npx nodemon app.js` or an npm script. In this project, `npm start` runs `nodemon app.js`.
