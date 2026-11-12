@@ -44,3 +44,28 @@ npm test                # Shortcut for npm run test.
 ```
 
 - Running `nodemon app.js` directly requires `nodemon` to be on the terminal's `PATH`, usually through a global installation. For a local installation, use `npx nodemon app.js` or an npm script. In this project, `npm start` runs `nodemon app.js`.
+
+## Express Basics
+
+- `app.use()` registers middleware. Matching middleware runs in registration order; call `next()` to pass control to the next matching middleware.
+- `app.use(path, middleware)` accepts an optional mount path. The default is `/`, which matches all request paths. `/admin` matches `/admin` and `/admin/...`, but not `/administrator`.
+- Register `bodyParser.urlencoded({ extended: false })` before routes that read `req.body`. It parses URL-encoded form data without nested objects. `express.urlencoded({ extended: false })` is a built-in alternative.
+- `app.get(path, handler)` and `app.post(path, handler)` register routes for specific HTTP methods. Unlike `app.use()`, they do not automatically match every subpath.
+- `express.Router()` creates a router. Add routes with `router.get()` or `router.post()`, export it with `module.exports = router`, then load and mount it with `app.use()`.
+- `app.use('/admin', adminRoutes)` mounts a router at `/admin`. Express removes this prefix while matching routes inside the router, so `/add-product` handles `/admin/add-product`.
+- `res.status(code)` sets the HTTP status and returns `res` for chaining, such as `res.status(404).send('Not found')`.
+- `res.send(body)` sets appropriate response headers, sends the body, and ends the response.
+- `res.sendFile(filePath)` sends a file to the browser. Use an absolute path, or a relative path with the `root` option.
+- `express.static(directory)` serves static files from a directory. It does not provide file upload or write operations.
+- `app.listen(port)` creates an HTTP server for the Express app and starts listening on the given port.
+
+## File Paths
+
+- In CommonJS, `__dirname` is the absolute path to the current module's directory; `__filename` is the absolute path to the module file.
+- The `path` module handles file paths. `path.join()` joins and normalizes path segments using the operating system's separator.
+- For a CommonJS entry point, `require.main.filename` is the entry file's absolute path. `path.dirname(require.main.filename)` returns its directory. `process.mainModule` is deprecated; use `require.main` instead.
+
+## HTML and CSS Basics
+
+- `<header>` and `<main>` are semantic HTML elements that describe introductory content and the page's main content. Use CSS to control layout and appearance.
+- BEM names CSS classes by block, element, and modifier. A block is independent, an element is part of a block, and a modifier represents a variation or state. A common format is `block__element--modifier`, such as `main-header__item--active`.
