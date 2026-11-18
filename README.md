@@ -12,6 +12,7 @@ node app.js
 
 - Use `require()` to load modules, such as `const http = require('http')`.
 - Assign a value, function, or object to `module.exports` to export it. Load a local module with a relative path, such as `require('./routes')`.
+- To export multiple values in CommonJS, use `exports.name = value` for each value. `require()` returns an object containing these properties.
 - The `http` module supports HTTP servers and clients.
 - `http.createServer(handler)` creates a server. The handler receives the request (`req`) and response (`res`) objects.
 - `server.listen(port)` starts listening for connections on the given port.
@@ -69,3 +70,35 @@ npm test                # Shortcut for npm run test.
 
 - `<header>` and `<main>` are semantic HTML elements that describe introductory content and the page's main content. Use CSS to control layout and appearance.
 - BEM names CSS classes by block, element, and modifier. A block is independent, an element is part of a block, and a modifier represents a variation or state. A common format is `block__element--modifier`, such as `main-header__item--active`.
+
+## Template Engines
+
+- Template engines generate HTML from templates and data. Pug, Handlebars, and EJS are examples.
+- `app.set(name, value)` stores an application setting.
+- `app.set('view engine', 'pug')` selects Pug as the default engine when a view name has no extension.
+- `app.set('views', directory)` sets the directory where Express looks for templates.
+- `res.render('shop')` renders the `shop` template using the default engine and sends the generated HTML response.
+- Pass template data as the second argument, such as `res.render('shop', { pageTitle: 'Shop' })`. The template can access `pageTitle` by name.
+
+### Pug
+
+- Pug uses indentation to define HTML structure and supports server-side expressions and logic.
+- `#{expression}` inserts an HTML-escaped value into text. `= expression` outputs an HTML-escaped value after a tag, such as `h1= pageTitle`.
+
+### Handlebars
+
+- Register `express-handlebars` with `app.engine()` before using it. The registered extension, `view engine` setting, and template file extension should match:
+
+```js
+const { engine } = require('express-handlebars');
+
+app.engine('hbs', engine({ extname: '.hbs' }));
+app.set('view engine', 'hbs');
+```
+
+- `{{name}}` outputs the HTML-escaped value of `name` from the template data.
+
+### EJS
+
+- `<%= expression %>` outputs an HTML-escaped value. `<% code %>` runs JavaScript without directly outputting a value.
+- `<%- include('includes/head.ejs') %>` inserts a reusable template relative to the current template. `<%- ... %>` outputs HTML without escaping it, so the included markup renders correctly.
