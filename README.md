@@ -102,3 +102,11 @@ app.set('view engine', 'hbs');
 
 - `<%= expression %>` outputs an HTML-escaped value. `<% code %>` runs JavaScript without directly outputting a value.
 - `<%- include('includes/head.ejs') %>` inserts a reusable template relative to the current template. `<%- ... %>` outputs HTML without escaping it, so the included markup renders correctly.
+
+## MVC Basics
+
+- MVC separates responsibilities: models manage data and business logic, views display content, and controllers handle requests and coordinate models and views.
+
+## JavaScript Classes
+
+- `static` defines a method on the class itself, rather than on its instances. Call it with `ClassName.method()` without creating an instance.
