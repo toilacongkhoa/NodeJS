@@ -2,12 +2,6 @@
 
 This repository contains small projects created while learning Node.js.
 
-## Run the Project
-
-```bash
-node app.js
-```
-
 ## Node.js Basics
 
 - Use `require()` to load modules, such as `const http = require('http')`.
@@ -19,6 +13,7 @@ node app.js
 - `res.setHeader('Content-Type', 'text/html')` tells the browser to treat the response as HTML. Set headers before writing the body.
 - `res.end()` finishes the response. Use `return res.end()` to exit the handler and prevent further writes.
 - `===` compares values without type conversion; `==` may convert types before comparing.
+- The unary `+` converts a value to a number. For example, `+'42'` returns `42`, while `+'abc'` returns `NaN`.
 - The handler runs once for each request, with a separate response for that request.
 - Each request entry in the browser's Network tab shows request and response details.
 - The `fs` module reads, writes, and manages files and directories.
@@ -102,6 +97,7 @@ app.set('view engine', 'hbs');
 
 - `<%= expression %>` outputs an HTML-escaped value. `<% code %>` runs JavaScript without directly outputting a value.
 - `<%- include('includes/head.ejs') %>` inserts a reusable template relative to the current template. `<%- ... %>` outputs HTML without escaping it, so the included markup renders correctly.
+- Pass data to an EJS partial as the second argument to `include()`. In `<%- include('../includes/add-to-cart.ejs', { product: product }) %>`, the key on the left is the name the partial uses, and the value on the right comes from the current template.
 
 ## MVC Basics
 
@@ -110,3 +106,9 @@ app.set('view engine', 'hbs');
 ## JavaScript Classes
 
 - `static` defines a method on the class itself, rather than on its instances. Call it with `ClassName.method()` without creating an instance.
+
+## Routes and Request Data
+
+- A colon marks a named route parameter. In `/products/:productId`, `:productId` captures a single path segment. For `/products/42`, `req.params.productId` is `'42'`.
+- Use `GET` to retrieve data. The requested operation should leave application state unchanged.
+- Query parameters follow `?` in the URL as `key=value` pairs separated by `&`. For `?edit=true&tab=details`, read the values with `req.query.edit` and `req.query.tab`.
