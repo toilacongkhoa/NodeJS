@@ -112,3 +112,37 @@ app.set('view engine', 'hbs');
 - A colon marks a named route parameter. In `/products/:productId`, `:productId` captures a single path segment. For `/products/42`, `req.params.productId` is `'42'`.
 - Use `GET` to retrieve data. The requested operation should leave application state unchanged.
 - Query parameters follow `?` in the URL as `key=value` pairs separated by `&`. For `?edit=true&tab=details`, read the values with `req.query.edit` and `req.query.tab`.
+
+## MySQL Setup
+
+With Node.js 22 or later, copy `.env.example` to `.env` in the project root and set `DB_PASSWORD` to your MySQL password. You can also set `DB_PASSWORD` in the environment before starting the app. Git ignores `.env`.
+
+## Database Basics
+
+| Relational database | Document database |
+| --- | --- |
+| Database | Database |
+| Table | Collection |
+| Row | Document |
+
+- A relational table defines the columns shared by its rows. Documents in a collection can have different fields unless schema validation requires otherwise.
+- Relational databases use foreign keys to represent relationships and `JOIN` to query related rows. Document databases often embed related data or duplicate selected fields for easier reads.
+- A connection pool reuses database connections. MySQL2 pool methods borrow a connection for each query and release it when the query finishes.
+- A Promise represents an asynchronous result. It starts `pending`, then becomes `fulfilled` with a value or `rejected` with a reason.
+
+### MySQL2 Queries
+
+```js
+const [rows, fields] = await db.execute('SELECT * FROM products');
+```
+
+For a `SELECT` query, `rows` contains the results, and `fields` contains column metadata such as names and types. By default, each row is an object keyed by column name.
+
+```js
+await db.execute(
+  'INSERT INTO products (title, price, imageUrl, description) VALUES (?, ?, ?, ?)',
+  [this.title, this.price, this.imageUrl, this.description]
+);
+```
+
+`execute()` binds the values to the `?` placeholders in order. Pass values as the second argument to keep them separate from the SQL text.
